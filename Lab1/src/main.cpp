@@ -4,13 +4,31 @@
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
 
-byte program_mem[12] = { 0x74,
+byte program_mem[30] = { 0x74,
                         0x00,
                         0x0A,
                         0xF8,
                         0x00,
                         0x00,
                         0x88,
+                        0x00,
+                        0x05,
+                        0xA8,
+                        0x00,
+                        0x00,
+                        0xA8,
+                        0x00,
+                        0x01,
+                        0xA8,
+                        0x00,
+                        0x02,
+                        0xA8,
+                        0x00,
+                        0x03,
+                        0xA8,
+                        0x00,
+                        0x04,
+                        0xA8,
                         0x00,
                         0x05,
                         0xFF,
@@ -71,6 +89,8 @@ void loop(){
                   state_next=0x01;
                   break;
     case  0x01  :// decode
+                  data_memory_addr=operand_hi<<8;
+                  data_memory_addr=data_memory_addr | operand_lo;
                   Serial.println("2) Decode state");
                   switch(opcode){
                     case 0x22:    // RET;
@@ -97,13 +117,18 @@ void loop(){
                                     Serial.println(Reg_A,HEX);
                                     break;
                     case 0x88:    // MOV data addr,R0
-                                    data_memory_addr=operand_hi<<8;
-                                    data_memory_addr=data_memory_addr | operand_lo;
                                     data_memory[data_memory_addr] = Reg_R0;
                                     Serial.print("Data memory[");
                                     Serial.print(data_memory_addr);
                                     Serial.print("]:");
-                                    Serial.println(data_memory[data_memory_addr]);
+                                    Serial.println(data_memory[data_memory_addr],HEX);
+                                    break;
+                    case 0xA8:    // MOV R0, data addr
+                                    Reg_R0 = data_memory[data_memory_addr];
+                                    Serial.print("Data memory[");
+                                    Serial.print(data_memory_addr);
+                                    Serial.print("]:");
+                                    Serial.println(Reg_R0,HEX);
                                     break;
                     case 0xF8:    // MOV R0, A;
                                     Reg_R0 = Reg_A;
