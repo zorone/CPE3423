@@ -27,6 +27,12 @@ byte Reg_B;
 
 byte Reg_PC;    // program counter Register
 
+/********************************************************************************/
+/*                            8-bit  State Machine                              */
+/********************************************************************************/
+byte state_current;
+byte state_next;
+
 int count;
 void setup(){
   Serial.begin(9600);
@@ -36,6 +42,17 @@ void setup(){
 }
 
 void loop(){
+  /************************ start state machine ********************************/
+  switch(){
+    case  :       // fetch
+      break;
+    case  :       // decode
+      break;
+    case  :       // execute
+      break;
+    default:
+      break;
+  }
   Serial.print("loop: ");
   Serial.println(count);
   if(count>=65535){
