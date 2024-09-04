@@ -30,6 +30,7 @@ byte Reg_A;
 byte Reg_B;
 
 byte Reg_PC;    // program counter Register
+byte Reg_R0;
 
 /********************************************************************************/
 /*                            8-bit  State Machine                              */
@@ -93,6 +94,11 @@ void loop(){
                                     Reg_A = operand_lo;
                                     Serial.print("Register A :");
                                     Serial.println(Reg_A,HEX);
+                                    break;
+                    case 0xF8:    // MOV R0, A;
+                                    Reg_R0 = Reg_A;
+                                    Serial.print("Register R0 :");
+                                    Serial.println(Reg_R0,HEX);
                                     break;
                     case 0xFF:    // MOV PC, #0x00;
                                     Reg_PC = 0x00;
