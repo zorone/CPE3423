@@ -22,10 +22,10 @@ byte data_mem[32];
 /********************************************************************************/
 /*                              8 bit  Registers                                */
 /********************************************************************************/
-byte Register_A;
-byte Register_B;
+byte Reg_A;
+byte Reg_B;
 
-byte Register_Program_counter;
+byte Reg_PC;    // program counter Register
 
 int count;
 void setup(){
