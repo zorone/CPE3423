@@ -4,9 +4,12 @@
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
 
-byte program_mem[9] = { 0x74,
+byte program_mem[12] = { 0x74,
                         0x00,
                         0xA5,
+                        0xF8,
+                        0x00,
+                        0x00,
                         0x88,
                         0x00,
                         0x05,
@@ -96,7 +99,7 @@ void loop(){
                     case 0x88:    // MOV data addr,R0
                                     data_memory_addr=operand_hi<<8;
                                     data_memory_addr=data_memory_addr | operand_lo;
-                                    data_memory[data_memory_addr] = Reg_A;
+                                    data_memory[data_memory_addr] = Reg_R0;
                                     Serial.print("Data memory[");
                                     Serial.print(data_memory_addr);
                                     Serial.print(" : ]:");
