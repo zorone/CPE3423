@@ -100,9 +100,12 @@ void loop(){
                                     Serial.println(Reg_A,HEX);
                                     break;
                     case 0x88:    // MOV data addr,R0
+                                    data_mem[operand_lo] = Reg_A;
+                                    Serial.print("Register R0 :");
+                                    Serial.println(Reg_R0,HEX);
                                     break;
                     case 0xF8:    // MOV R0, A;
-                                    data_mem[operand_lo] = Reg_A;
+                                    Reg_R0 = Reg_A;
                                     Serial.print("Register R0 :");
                                     Serial.println(Reg_R0,HEX);
                                     break;
