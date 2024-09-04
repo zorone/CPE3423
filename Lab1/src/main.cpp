@@ -9,7 +9,7 @@ byte program_mem[8] = { 0x74,
                         0x0A,
                         0x34,
                         0x00,
-                        0x00,
+                        0x01,
                         0xFF,
                         0xFF};
 
