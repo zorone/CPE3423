@@ -53,7 +53,7 @@ void loop(){
                   opcode=program_mem[Reg_PC];
                   operand_hi=program_mem[Reg_PC+1];
                   operand_lo=program_mem[Reg_PC+2];
-                  Serial.println("Fetch state:");
+                  Serial.println("1) Fetch state:");
                   Serial.print("opcode    :");
                   Serial.println(opcode,HEX);
                   Serial.print("opcode_hi :");
@@ -65,7 +65,7 @@ void loop(){
                   state_next=0x01;
                   break;
     case  0x01  :// decode
-                  Serial.println("Decode state");
+                  Serial.println("2) Decode state");
                   switch(opcode){
                     case 0x74:    // MOV A, #data
                                     Reg_A = operand_lo;
@@ -78,7 +78,7 @@ void loop(){
                   state_next=0x02;
                   break;
     case  0x02  :// execute
-                  Serial.println("Execute state");
+                  Serial.println("3) Execute state");
                   state_next=0x00;
                   break;
     default:
