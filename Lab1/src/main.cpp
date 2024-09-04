@@ -88,7 +88,7 @@ void loop(){
                   break;
     case  0x02  :// execute
                   Serial.println("3) Execute state");
-                  Reg_PC = Reg_PC+3;
+                  if(opcode != 0xFF) Reg_PC = Reg_PC+3;
                   Serial.print("Register PC :");
                   Serial.println(Reg_PC,HEX);
                   state_next=0x00;
