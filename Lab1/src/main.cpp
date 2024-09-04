@@ -102,7 +102,7 @@ void loop(){
                                     data_memory[data_memory_addr] = Reg_R0;
                                     Serial.print("Data memory[");
                                     Serial.print(data_memory_addr);
-                                    Serial.print(" : ]:");
+                                    Serial.print("]:");
                                     Serial.println(data_memory[data_memory_addr]);
                                     break;
                     case 0xF8:    // MOV R0, A;
