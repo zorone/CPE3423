@@ -4,13 +4,16 @@
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
 
-byte program_mem[9] = { 0x74,
+byte program_mem[12] = { 0x74,
                         0x00,
-                        0x0A,
-                        0x34,
+                        0xA5,
+                        0x44,
                         0x00,
-                        0x01,
-                        0xFF,
+                        0xA5,
+                        0x54,
+                        0x00,
+                        0xA5,
+                        0x22,
                         0x00,
                         0x00};
 
@@ -68,13 +71,26 @@ void loop(){
     case  0x01  :// decode
                   Serial.println("2) Decode state");
                   switch(opcode){
-                    case 0x74:    // MOV A, #data
-                                    Reg_A = operand_lo;
-                                    Serial.print("Register A :");
-                                    Serial.println(Reg_A,HEX);
+                    case 0x22:    // RET;
+                                    Reg_PC = 0x00;
                                     break;
                     case 0x34:    // ADD A,#data
                                     Reg_A = Reg_A+operand_lo;
+                                    Serial.print("Register A :");
+                                    Serial.println(Reg_A,HEX);
+                                    break;
+                    case 0x44:    // ORL A,#data
+                                    Reg_A |= operand_lo;
+                                    Serial.print("Register A :");
+                                    Serial.println(Reg_A,HEX);
+                                    break;
+                    case 0x54:    // AND A,#data
+                                    Reg_A &= operand_lo;
+                                    Serial.print("Register A :");
+                                    Serial.println(Reg_A,HEX);
+                                    break;
+                    case 0x74:    // MOV A, #data
+                                    Reg_A = operand_lo;
                                     Serial.print("Register A :");
                                     Serial.println(Reg_A,HEX);
                                     break;
@@ -88,13 +104,13 @@ void loop(){
                   break;
     case  0x02  :// execute
                   Serial.println("3) Execute state");
-                  if(opcode != 0xFF) Reg_PC = Reg_PC+3;
+                  if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
                   Serial.print("Register PC :");
                   Serial.println(Reg_PC,HEX);
                   state_next=0x00;
                   break;
     default:
-      Serial.println("Unnone state");
+      Serial.println("Unknown state");
       state_next=0x00;
       break;
   }
