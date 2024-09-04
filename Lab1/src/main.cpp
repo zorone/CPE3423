@@ -50,7 +50,8 @@ void loop(){
   switch(state_current){
     case  0x00  :// fetch
                   opcode=program_mem[Reg_PC];
-                  Serial.println("Fetch state",opcode);
+                  Serial.print("Fetch state:");
+                  Serial.println(opcode);
                   state_next=0x01;
                   break;
     case  0x01  :// decode
