@@ -42,7 +42,6 @@ void setup(){
   state_current = 0x00;
   state_next    = 0x00;
   Reg_PC        = 0x00;
-  delay(1000);
 }
 
 void loop(){
@@ -50,8 +49,8 @@ void loop(){
   switch(state_current){
     case  0x00  :// fetch
                   opcode=program_mem[Reg_PC];
-                  Serial.print("Fetch state:");
-                  Serial.println(opcode);
+                  Serial.print("Fetch state   :");
+                  Serial.println(opcode,HEX);
                   state_next=0x01;
                   break;
     case  0x01  :// decode
