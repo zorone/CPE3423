@@ -18,7 +18,7 @@ byte program_mem[9] = { 0x74,
 /*                       Data Memory    8 bit  b address                        */
 /********************************************************************************/
 
-byte         data_mem[32];
+byte         data_memory[32];
 unsigned int data_memory_addr;
 
 /********************************************************************************/
@@ -97,8 +97,9 @@ void loop(){
                                     data_memory_addr=operand_hi<<8;
                                     data_memory_addr=data_memory_addr | operand_lo;
                                     data_memory[data_memory_addr] = Reg_A;
-                                    Serial.print("Data memory address");
-                                    Serial.print(data_memory_addr);
+                                    Serial.print("Data memory[");
+                                    Serial.print(data_memory_addr," : ");
+                                    Serial.print("]:");
                                     Serial.println(data_memory[data_memory_addr]);
                                     break;
                     case 0xF8:    // MOV R0, A;
