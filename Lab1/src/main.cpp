@@ -33,6 +33,8 @@ byte Reg_PC;    // program counter Register
 byte state_current;
 byte state_next;
 byte opcode;
+byte operand_hi;
+byte operand_lo;
 
 int count;
 void setup(){
@@ -49,8 +51,12 @@ void loop(){
   switch(state_current){
     case  0x00  :// fetch
                   opcode=program_mem[Reg_PC];
+                  operand_hi=program_mem[Reg_PC+1];
+                  operand_hi=program_mem[Reg_PC+2];
                   Serial.print("Fetch state   :");
                   Serial.println(opcode,HEX);
+                  Serial.println(operand_hi,HEX);
+                  Serial.println(operand_lo,HEX);
                   state_next=0x01;
                   break;
     case  0x01  :// decode
