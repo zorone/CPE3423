@@ -53,9 +53,11 @@ void loop(){
                   opcode=program_mem[Reg_PC];
                   operand_hi=program_mem[Reg_PC+1];
                   operand_lo=program_mem[Reg_PC+2];
-                  Serial.print("Fetch state   :");
+                  Serial.print("Fetch state:");
                   Serial.println(opcode,HEX);
+                  Serial.print("opcode ::");
                   Serial.println(operand_hi,HEX);
+                  Serial.print("opcode_high");
                   Serial.println(operand_lo,HEX);
                   state_next=0x01;
                   break;
