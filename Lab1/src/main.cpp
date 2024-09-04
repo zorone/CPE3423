@@ -4,14 +4,15 @@
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
 
-byte program_mem[8] = { 0x74,
+byte program_mem[9] = { 0x74,
                         0x00,
                         0x0A,
                         0x34,
                         0x00,
                         0x01,
                         0xFF,
-                        0xFF};
+                        0x00,
+                        0x00};
 
 /********************************************************************************/
 /*                       Data Memory    8 bit  b address                        */
@@ -77,6 +78,9 @@ void loop(){
                                     Serial.print("Register A :");
                                     Serial.println(Reg_A,HEX);
                                     break;
+                    case 0xFF:    // MOV PC, #0x00;
+                                    Reg_PC = 0x00;
+                                    break;
                     default:
                             break;
                   }
@@ -85,7 +89,6 @@ void loop(){
     case  0x02  :// execute
                   Serial.println("3) Execute state");
                   Reg_PC = Reg_PC+3;
-                  if (Reg_PC>=6) Reg_PC=0x00;
                   Serial.print("Register PC :");
                   Serial.println(Reg_PC,HEX);
                   state_next=0x00;
