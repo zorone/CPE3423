@@ -4,7 +4,7 @@
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
 
-byte program_mem[8] = { 0xFF,
+byte program_mem[8] = { 0x0A,
                         0xFF,
                         0xFF,
                         0xFF,
