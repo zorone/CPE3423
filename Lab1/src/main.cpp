@@ -67,12 +67,12 @@ void loop(){
                   switch(opcode){
                     case 0x74:    // MOV A, #data
                                     Reg_A = operand_lo;
+                                    Serial.println("Register A :");
+                                    Serial.println(Reg_A,HEX);
                                     break;
                     default:
                             break;
                   }
-                  Serial.println("Register A :");
-                  Serial.println(Reg_A,HEX);
                   state_next=0x02;
                   break;
     case  0x02  :// execute
