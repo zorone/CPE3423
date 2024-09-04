@@ -4,7 +4,7 @@
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
 
-byte program_mem[8] = { 0x74,
+byte program_mem[8] = { 0x34,
                         0xFF,
                         0x0A,
                         0xFF,
@@ -69,6 +69,11 @@ void loop(){
                   switch(opcode){
                     case 0x74:    // MOV A, #data
                                     Reg_A = operand_lo;
+                                    Serial.print("Register A :");
+                                    Serial.println(Reg_A,HEX);
+                                    break;
+                    case 0x34:    // ADD A,#data
+                                    Reg_A = Reg_A+operand_lo;
                                     Serial.print("Register A :");
                                     Serial.println(Reg_A,HEX);
                                     break;
