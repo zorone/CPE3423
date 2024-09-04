@@ -64,6 +64,15 @@ void loop(){
                   break;
     case  0x01  :// decode
                   Serial.println("Decode state");
+                  switch(opcode){
+                    case 0x74:    // MOV A, #data
+                                    Reg_A = operand_lo;
+                                    break;
+                    default:
+                            break;
+                  }
+                  Serial.println("Register A :");
+                  Serial.println(Reg_A,HEX);
                   state_next=0x02;
                   break;
     case  0x02  :// execute
