@@ -60,6 +60,8 @@ void loop(){
                   Serial.println(operand_hi,HEX);
                   Serial.print("opcode_lo :");
                   Serial.println(operand_lo,HEX);
+                  Serial.print("Register A :");
+                  Serial.println(Reg_A,HEX);
                   state_next=0x01;
                   break;
     case  0x01  :// decode
