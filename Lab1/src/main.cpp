@@ -52,7 +52,7 @@ void loop(){
     case  0x00  :// fetch
                   opcode=program_mem[Reg_PC];
                   operand_hi=program_mem[Reg_PC+1];
-                  operand_hi=program_mem[Reg_PC+2];
+                  operand_lo=program_mem[Reg_PC+2];
                   Serial.print("Fetch state   :");
                   Serial.println(opcode,HEX);
                   Serial.println(operand_hi,HEX);
