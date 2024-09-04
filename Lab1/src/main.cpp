@@ -53,7 +53,7 @@ void loop(){
                   opcode=program_mem[Reg_PC];
                   operand_hi=program_mem[Reg_PC+1];
                   operand_lo=program_mem[Reg_PC+2];
-                  Serial.print("Fetch state:");
+                  Serial.println("Fetch state:");
                   Serial.print("opcode    :");
                   Serial.println(opcode,HEX);
                   Serial.print("opcode_hi :");
@@ -67,7 +67,7 @@ void loop(){
                   switch(opcode){
                     case 0x74:    // MOV A, #data
                                     Reg_A = operand_lo;
-                                    Serial.println("Register A :");
+                                    Serial.print("Register A :");
                                     Serial.println(Reg_A,HEX);
                                     break;
                     default:
@@ -97,5 +97,5 @@ void loop(){
     }
     delay(100);
   */
- delay(1000);
+ delay(5000);
 }
