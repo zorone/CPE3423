@@ -40,6 +40,7 @@ void setup(){
   Serial.println("Setup process");
   state_current = 0x00;
   state_next    = 0x00;
+  Reg_PC        = 0x00;
   delay(1000);
 }
 
