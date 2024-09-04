@@ -6,7 +6,7 @@
 
 byte program_mem[12] = { 0x74,
                         0x00,
-                        0xA5,
+                        0x0A,
                         0xF8,
                         0x00,
                         0x00,
