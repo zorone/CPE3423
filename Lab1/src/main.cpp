@@ -24,8 +24,8 @@ byte program_mem[12] = { 0x74,
 /*                       Data Memory    8 bit  b address                        */
 /********************************************************************************/
 
-byte data_mem[32];
-unsigned int data_addr;
+byte         data_mem[32];
+unsigned int data_memory_addr;
 
 /********************************************************************************/
 /*                              8 bit  Registers                                */
@@ -99,8 +99,10 @@ void loop(){
                                     Serial.print("Register A :");
                                     Serial.println(Reg_A,HEX);
                                     break;
+                    case 0x88:    // MOV data addr,R0
+                                    break;
                     case 0xF8:    // MOV R0, A;
-                                    Reg_R0 = Reg_A;
+                                    data_mem[operand_lo] = Reg_A;
                                     Serial.print("Register R0 :");
                                     Serial.println(Reg_R0,HEX);
                                     break;
