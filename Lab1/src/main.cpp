@@ -44,21 +44,33 @@ void setup(){
 void loop(){
   /************************ start state machine ********************************/
   switch(){
-    case  :       // fetch
-      break;
-    case  :       // decode
-      break;
-    case  :       // execute
-      break;
+    case  0x00  :// fetch
+                  Serial.println("Fetch state");
+                  state_next=0x01;
+                  break;
+    case  0x01  :// decode
+                  Serial.println("Decode state");
+                  state_next=0x02;
+                  break;
+    case  0x02  :// execute
+                  Serial.println("Execute state");
+                  state_next=0x00;
+                  break;
     default:
+      Serial.println("Unnone state");
+      state_next=0x00;
       break;
   }
-  Serial.print("loop: ");
-  Serial.println(count);
-  if(count>=65535){
-    count =0;
-  }else{
-    count++;
-  }
-  delay(100);
+  /************************* end state machine *********************************/
+
+  /**
+    Serial.print("loop: ");
+    Serial.println(count);
+    if(count>=65535){
+      count =0;
+    }else{
+      count++;
+    }
+    delay(100);
+  */
 }
