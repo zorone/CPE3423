@@ -32,6 +32,7 @@ byte Reg_PC;    // program counter Register
 /********************************************************************************/
 byte state_current;
 byte state_next;
+byte opcode;
 
 int count;
 void setup(){
@@ -48,7 +49,8 @@ void loop(){
   /************************ start state machine ********************************/
   switch(state_current){
     case  0x00  :// fetch
-                  Serial.println("Fetch state");
+                  opcode=program_mem[Reg_PC];
+                  Serial.println("Fetch state",opcode);
                   state_next=0x01;
                   break;
     case  0x01  :// decode
