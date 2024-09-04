@@ -43,7 +43,7 @@ void setup(){
 
 void loop(){
   /************************ start state machine ********************************/
-  switch(){
+  switch(state_current){
     case  0x00  :// fetch
                   Serial.println("Fetch state");
                   state_next=0x01;
@@ -61,6 +61,7 @@ void loop(){
       state_next=0x00;
       break;
   }
+  state_current = state_next;
   /************************* end state machine *********************************/
 
   /**
