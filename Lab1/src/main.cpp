@@ -38,6 +38,8 @@ void setup(){
   Serial.begin(9600);
   count=0;
   Serial.println("Setup process");
+  state_current = 0x00;
+  state_next    = 0x00;
   delay(1000);
 }
 
