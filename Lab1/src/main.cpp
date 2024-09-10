@@ -10,7 +10,7 @@
 // Unfortunately, you can't access data memory using another register.
 // We will instead opt-in for `MOV addr, R0` and `MOV R0, addr` for accessing them.
 
-byte program_mem[] = { 0x74,
+byte program_mem[198] = { 0x74,
                        0x00,
                        0x20,
                        0xF5,
