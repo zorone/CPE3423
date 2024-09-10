@@ -1,8 +1,5 @@
 #include <Arduino.h>
 
-const bool DEBUG = false;
-const bool TEST  = true;
-
 /********************************************************************************/
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
@@ -333,8 +330,6 @@ byte operand_hi;
 byte operand_lo;
 
 int count;
-int delay_time;
-int show_text;
 void setup(){
   Serial.begin(9600);
   count=0;
@@ -342,57 +337,42 @@ void setup(){
   state_current = 0x00;
   state_next    = 0x00;
   Reg_PC        = 0x00;
-
-  delay_time    = 1000*(!TEST)+100;
-  show_text     = 1;
 }
 
 void loop(){
   /************************ start state machine ********************************/
-    if (show_text) {
-        Serial.println("Loading value into data memory...");
-        show_text = 0;
-    }
 
-    String label = "delay_time: " + String(delay_time) + ", opcode: " + program_mem[Reg_PC] + ", PC: " + Reg_PC;
-    String value_state = "show_text: " + String(show_text);
-    Serial.println(label + ", " + value_state);
+    String label = String(program_mem[Reg_PC]);
+    Serial.println("opcode: " + label + ", PC: " + Reg_PC);
 
     switch(state_current){
-        case  0x00  :// fetch
-                        if(DEBUG){         
-                            opcode=program_mem[Reg_PC];
-                            operand_hi=program_mem[Reg_PC+1];
-                            operand_lo=program_mem[Reg_PC+2];
-                            Serial.println("1) Fetch state:");
-                            Serial.print("opcode    :");
-                            Serial.println(opcode,HEX);
-                            Serial.print("opcode_hi :");
-                            Serial.println(operand_hi,HEX);
-                            Serial.print("opcode_lo :");
-                            Serial.println(operand_lo,HEX);
-                            Serial.print("Register A :");
-                            Serial.println(Reg_A,HEX);
-                        }
+        case  0x00  :// fetch   
+                        opcode=program_mem[Reg_PC];
+                        operand_hi=program_mem[Reg_PC+1];
+                        operand_lo=program_mem[Reg_PC+2];
+                        Serial.println("1) Fetch state:");
+                        Serial.print("opcode    :");
+                        Serial.println(opcode,HEX);
+                        Serial.print("opcode_hi :");
+                        Serial.println(operand_hi,HEX);
+                        Serial.print("opcode_lo :");
+                        Serial.println(operand_lo,HEX);
+                        Serial.print("Register A :");
+                        Serial.println(Reg_A,HEX);
                         state_next=0x01;
                         break;
         case  0x01  :// decode
                       data_memory_addr=operand_hi<<8;
                       data_memory_addr=data_memory_addr | operand_lo;
-                      if(DEBUG) Serial.println("2) Decode state");
+                      Serial.println("2) Decode state");
                       switch(opcode){
                         case 0x14:    // DEC A;
                                         Reg_A--;
                                         break;
                         case 0x22:    // RET;
-                                        if(TEST) {
-                                            show_text = 1;
-                                            delay_time = 100;
-                                        }
                                         Reg_PC = 0x00;
-                                        state_current = 0x00;
-                                        state_next = 0x00;
-                                        return;
+                                        Serial.println("Reg_PC: " + Reg_PC);
+                                        break;
                         case 0x34:    // ADD A,#data
                                         Reg_A = Reg_A+operand_lo;
                                         Serial.print("Register A :");
@@ -415,15 +395,12 @@ void loop(){
                                         break;
                         case 0x88:    // MOV data addr,R0
                                         data_memory[data_memory_addr] = Reg_R0;
-                                        if(DEBUG) {
-                                            Serial.print("Data memory[");
-                                            Serial.print(data_memory_addr,HEX);
-                                            Serial.print("]:");
-                                            Serial.println(data_memory[data_memory_addr],HEX);
-                                        }
+                                        Serial.print("Data memory[");
+                                        Serial.print(data_memory_addr,HEX);
+                                        Serial.print("]:");
+                                        Serial.println(data_memory[data_memory_addr],HEX);
                                         break;
                         case 0xA8:    // MOV R0, data addr
-                                        if(TEST) delay_time = 500;
                                         Reg_R0 = data_memory[data_memory_addr];
                                         Serial.print("Data memory[");
                                         Serial.print(data_memory_addr,HEX);
@@ -432,12 +409,10 @@ void loop(){
                                         break;
                         case 0xF5:    // MOV data addr, A;
                                         data_memory[data_memory_addr] = Reg_A;
-                                        if(DEBUG) {
-                                            Serial.print("Data memory[");
-                                            Serial.print(data_memory_addr,HEX);
-                                            Serial.print("]:");
-                                            Serial.println(Reg_A,HEX);
-                                        }
+                                        Serial.print("Data memory[");
+                                        Serial.print(data_memory_addr,HEX);
+                                        Serial.print("]:");
+                                        Serial.println(Reg_A,HEX);
                                         break;
                         case 0xF8:    // MOV R0, A;
                                         Reg_R0 = Reg_A;
@@ -445,25 +420,18 @@ void loop(){
                                         Serial.println(Reg_R0,HEX);
                                         break;
                         case 0xFF:    // MOV PC, #0x00;
-                                        if(TEST) {
-                                            show_text = 1;
-                                            delay_time = 100;
-                                        }
                                         Reg_PC = 0x00;
-                                        state_current = 0x00;
-                                        state_next = 0x00;
-                                        return;
+                                        break;
                         default:
                                 break;
                       }
                       state_next=0x02;
                       break;
         case  0x02  :// execute
-                      if(DEBUG) Serial.println("3) Execute state");
+                      Serial.println("3) Execute state");
                       if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
-                      if (DEBUG) {  Serial.print("Register PC :");
-                        Serial.println(Reg_PC,HEX);
-                      }
+                      Serial.print("Register PC :");
+                      Serial.println(Reg_PC,HEX);
                       state_next=0x00;
                       break;
         default:
@@ -484,5 +452,5 @@ void loop(){
         }
         delay(100);
     */
-    delay(delay_time);
+    delay(100);
 }
