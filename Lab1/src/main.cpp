@@ -342,7 +342,7 @@ void setup(){
   state_next    = 0x00;
   Reg_PC        = 0x00;
 
-  delay_time    = 0;
+  delay_time    = 1000*(!TEST);
   show_text     = 1;
 }
 
@@ -379,6 +379,10 @@ void loop(){
                                         Reg_A--;
                                         break;
                         case 0x22:    // RET;
+                                        if(TEST) {
+                                            show_text = 1;
+                                            delay_time = 0;
+                                        }
                                         Reg_PC = 0x00;
                                         break;
                         case 0x34:    // ADD A,#data
@@ -397,7 +401,6 @@ void loop(){
                                         Serial.println(Reg_A,HEX);
                                         break;
                         case 0x74:    // MOV A, #data
-                                        show_text = 1;
                                         Reg_A = operand_lo;
                                         Serial.print("Register A :");
                                         Serial.println(Reg_A,HEX);
@@ -412,6 +415,7 @@ void loop(){
                                         }
                                         break;
                         case 0xA8:    // MOV R0, data addr
+                                        if(TEST) delay_time = 1000;
                                         Reg_R0 = data_memory[data_memory_addr];
                                         Serial.print("Data memory[");
                                         Serial.print(data_memory_addr,HEX);
@@ -433,6 +437,10 @@ void loop(){
                                         Serial.println(Reg_R0,HEX);
                                         break;
                         case 0xFF:    // MOV PC, #0x00;
+                                        if(TEST) {
+                                            show_text = 1;
+                                            delay_time = 0;
+                                        }
                                         Reg_PC = 0x00;
                                         break;
                         default:
@@ -466,5 +474,5 @@ void loop(){
         }
         delay(100);
     */
-    delay(1000);
+    delay(delay_time);
 }
