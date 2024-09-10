@@ -474,5 +474,5 @@ void loop(){
         }
         delay(100);
     */
-    delay(delay_time);
+    delay(delay_time+200);
 }
