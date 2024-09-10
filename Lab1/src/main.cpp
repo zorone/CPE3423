@@ -342,7 +342,7 @@ void setup(){
   state_next    = 0x00;
   Reg_PC        = 0x00;
 
-  delay_time    = 1000*(!TEST);
+  delay_time    = 1000*(!TEST)+200;
   show_text     = 1;
 }
 
@@ -353,7 +353,8 @@ void loop(){
         !show_text;
     }
 
-    Serial.println(delay_time, opcode);
+    String label = "delay_time: " + String(delay_time) + ", opcode: " + opcode + ", PC: " + Reg_PC;
+    Serial.println(label);
 
     switch(state_current){
         case  0x00  :// fetch
@@ -384,7 +385,7 @@ void loop(){
                         case 0x22:    // RET;
                                         if(TEST) {
                                             show_text = 1;
-                                            delay_time = 0;
+                                            delay_time = 200;
                                         }
                                         Reg_PC = 0x00;
                                         break;
@@ -442,7 +443,7 @@ void loop(){
                         case 0xFF:    // MOV PC, #0x00;
                                         if(TEST) {
                                             show_text = 1;
-                                            delay_time = 0;
+                                            delay_time = 200;
                                         }
                                         Reg_PC = 0x00;
                                         break;
