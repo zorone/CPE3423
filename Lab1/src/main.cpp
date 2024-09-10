@@ -420,7 +420,7 @@ void loop(){
                                         }
                                         break;
                         case 0xA8:    // MOV R0, data addr
-                                        if(TEST) delay_time = 500;
+                                        // if(TEST) delay_time = 500;
                                         Reg_R0 = data_memory[data_memory_addr];
                                         Serial.print("Data memory[");
                                         Serial.print(data_memory_addr,HEX);
