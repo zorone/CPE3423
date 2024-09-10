@@ -351,9 +351,8 @@ void loop(){
         show_text = 0;
     }
 
-    String label = "opcode: " + program_mem[Reg_PC] + String(", PC: ") + String(Reg_PC);
-    String value_state = "show_text: " + String(show_text);
-    Serial.println(label + ", " + value_state);
+    String label = String(program_mem[Reg_PC]);
+    Serial.println("opcode: " + label + ", PC: " + Reg_PC + ", show_text: " + String(show_text));
 
     switch(state_current){
         case  0x00  :// fetch
