@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#define DEBUG 0
-#define TEST  1
+#define DEBUG false
+#define TEST  true
 
 /********************************************************************************/
 /*                      Program Memory    8 bit  b address                      */
