@@ -389,9 +389,7 @@ void loop(){
                                             delay_time = 100;
                                         }
                                         Reg_PC = 0x00;
-                                        state_current = 0x00;
-                                        state_next = 0x00;
-                                        return;
+                                        break;
                         case 0x34:    // ADD A,#data
                                         Reg_A = Reg_A+operand_lo;
                                         Serial.print("Register A :");
@@ -449,9 +447,7 @@ void loop(){
                                             delay_time = 100;
                                         }
                                         Reg_PC = 0x00;
-                                        state_current = 0x00;
-                                        state_next = 0x00;
-                                        return;
+                                        break;
                         default:
                                 break;
                       }
