@@ -342,7 +342,7 @@ void setup(){
   state_next    = 0x00;
   Reg_PC        = 0x00;
 
-  delay_time    = 1000*(!TEST)+200;
+  delay_time    = 1000*(!TEST)+100;
   show_text     = 1;
 }
 
@@ -350,10 +350,10 @@ void loop(){
   /************************ start state machine ********************************/
     if (show_text) {
         Serial.println("Loading value into data memory...");
-        !show_text;
+        show_text = 0;
     }
 
-    String label = "delay_time: " + String(delay_time) + ", opcode: " + opcode + ", PC: " + Reg_PC;
+    String label = "delay_time: " + String(delay_time) + ", opcode: " + program_mem[Reg_PC] + ", PC: " + Reg_PC;
     Serial.println(label);
 
     switch(state_current){
@@ -385,7 +385,7 @@ void loop(){
                         case 0x22:    // RET;
                                         if(TEST) {
                                             show_text = 1;
-                                            delay_time = 200;
+                                            delay_time = 100;
                                         }
                                         Reg_PC = 0x00;
                                         break;
@@ -419,7 +419,7 @@ void loop(){
                                         }
                                         break;
                         case 0xA8:    // MOV R0, data addr
-                                        if(TEST) delay_time = 1000;
+                                        if(TEST) delay_time = 500;
                                         Reg_R0 = data_memory[data_memory_addr];
                                         Serial.print("Data memory[");
                                         Serial.print(data_memory_addr,HEX);
@@ -443,7 +443,7 @@ void loop(){
                         case 0xFF:    // MOV PC, #0x00;
                                         if(TEST) {
                                             show_text = 1;
-                                            delay_time = 200;
+                                            delay_time = 100;
                                         }
                                         Reg_PC = 0x00;
                                         break;
@@ -478,5 +478,5 @@ void loop(){
         }
         delay(100);
     */
-    delay(delay_time+500);
+    delay(delay_time);
 }
