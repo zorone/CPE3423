@@ -354,7 +354,8 @@ void loop(){
     }
 
     String label = "delay_time: " + String(delay_time) + ", opcode: " + program_mem[Reg_PC] + ", PC: " + Reg_PC;
-    Serial.println(label);
+    String value_state = "show_text: " + String(show_text);
+    Serial.println(label + ", " + value_state);
 
     switch(state_current){
         case  0x00  :// fetch
@@ -388,7 +389,9 @@ void loop(){
                                             delay_time = 100;
                                         }
                                         Reg_PC = 0x00;
-                                        break;
+                                        state_current = 0x00;
+                                        state_next = 0x00;
+                                        return;
                         case 0x34:    // ADD A,#data
                                         Reg_A = Reg_A+operand_lo;
                                         Serial.print("Register A :");
@@ -446,7 +449,9 @@ void loop(){
                                             delay_time = 100;
                                         }
                                         Reg_PC = 0x00;
-                                        break;
+                                        state_current = 0x00;
+                                        state_next = 0x00;
+                                        return;
                         default:
                                 break;
                       }
