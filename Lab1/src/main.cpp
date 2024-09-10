@@ -344,6 +344,8 @@ void setup(){
 
 #if(TEST)
   delay_time    = 100;
+#elif(DEBUG)
+  delay_time    = 1000;
 #else
   delay_time    = 500;
 #endif
