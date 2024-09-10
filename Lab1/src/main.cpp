@@ -319,7 +319,7 @@ unsigned int data_memory_addr;
 byte Reg_A;
 byte Reg_B;
 
-byte Reg_PC;    // program counter Register
+uint16_t Reg_PC;    // program counter Register
 byte Reg_R0;
 
 /********************************************************************************/
