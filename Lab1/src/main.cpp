@@ -254,8 +254,7 @@ void loop(){
                         state_next=0x01;
                         break;
         case  0x01  :// decode
-                      String label = String(program_mem[Reg_PC]);
-                      Serial.println("opcode: " + label + ", PC: " + Reg_PC);
+                      Serial.println("opcode: " + String(program_mem[Reg_PC]) + ", PC: " + Reg_PC);
 
                       data_memory_addr=operand_hi<<8;
                       data_memory_addr=data_memory_addr | operand_lo;
@@ -322,7 +321,7 @@ void loop(){
                       }
                       state_next=0x02;
                       break;
-        case  0x02  :// execute
+        case 0x02  :// execute
                       if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
                       state_next=0x00;
                       break;
