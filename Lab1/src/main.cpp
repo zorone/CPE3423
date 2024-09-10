@@ -342,6 +342,8 @@ void setup(){
 void loop(){
   /************************ start state machine ********************************/
 
+    // https://stackoverflow.com/questions/14733761/printf-formatting-for-hexadecimal
+    
     switch(state_current){
         case  0x00  :// fetch   
                         opcode=program_mem[Reg_PC];
@@ -350,53 +352,54 @@ void loop(){
                         state_next=0x01;
                         break;
         case  0x01  :// decode
-                      Serial.printf("opcode: %#X, PC: %#X ", program_mem[Reg_PC], Reg_PC);
+                      Serial.printf("opcode: %#04X, PC: %#06X ", program_mem[Reg_PC], Reg_PC);
 
                       data_memory_addr=operand_hi<<8;
                       data_memory_addr=data_memory_addr | operand_lo;
                       switch(opcode){
                         case 0x14:    // DEC A;
                                         Reg_A--;
-                                        Serial.printf("Reg_A: %#X\n", Reg_A);
+                                        Serial.printf("Reg_A: %#04X\n", Reg_A);
                                         break;
                         case 0x22:    // RET;
                                         Reg_PC = 0x00;
-                                        Serial.printf("Reg_PC: %#X\n", Reg_PC);
+                                        Serial.printf("Reg_PC: %#06X\n", Reg_PC);
                                         break;
                         case 0x34:    // ADD A,#data
                                         Reg_A = Reg_A+operand_lo;
-                                        Serial.printf("Register A : %#X\n", Reg_A);
+                                        Serial.printf("Register A : %#04X\n", Reg_A);
                                         break;
                         case 0x44:    // ORL A,#data
                                         Reg_A |= operand_lo;
-                                        Serial.printf("Register A : %#X\n", Reg_A);
+                                        Serial.printf("Register A : %#04X\n", Reg_A);
                                         break;
                         case 0x54:    // AND A,#data
                                         Reg_A &= operand_lo;
-                                        Serial.printf("Register A : %#X\n", Reg_A);
+                                        Serial.printf("Register A : %#04X\n", Reg_A);
                                         break;
                         case 0x74:    // MOV A, #data
                                         Reg_A = operand_lo;
-                                        Serial.printf("Register A : %#X\n", Reg_A);
+                                        Serial.printf("Register A : %#04X\n", Reg_A);
                                         break;
                         case 0x88:    // MOV data addr,R0
                                         data_memory[data_memory_addr] = Reg_R0;
-                                        Serial.printf("Data memory[%#X]: %#X\n", data_memory_addr, data_memory[data_memory_addr]);
+                                        Serial.printf("Data memory[%#04X]: %#04X\n", data_memory_addr, data_memory[data_memory_addr]);
                                         break;
                         case 0xA8:    // MOV R0, data addr
                                         Reg_R0 = data_memory[data_memory_addr];
-                                        Serial.printf("Data memory[%#X]: %#X\n", data_memory_addr, data_memory[data_memory_addr]);
+                                        Serial.printf("Data memory[%#04X]: %#04X\n", data_memory_addr, data_memory[data_memory_addr]);
                                         break;
                         case 0xF5:    // MOV data addr, A;
                                         data_memory[data_memory_addr] = Reg_A;
-                                        Serial.printf("Data memory[%#X]: %#X\n", data_memory_addr, Reg_A);
+                                        Serial.printf("Data memory[%#04X]: %#04X\n", data_memory_addr, Reg_A);
                                         break;
                         case 0xF8:    // MOV R0, A;
                                         Reg_R0 = Reg_A;
-                                        Serial.printf("Register R0 : %#X\n", Reg_R0);
+                                        Serial.printf("Register R0 : %#04X\n", Reg_R0);
                                         break;
                         case 0xFF:    // MOV PC, #0x00;
                                         Reg_PC = 0x00;
+                                        Serial.printf("Reg_PC: %#06X\n", Reg_PC);
                                         break;
                         default:
                                 break;
