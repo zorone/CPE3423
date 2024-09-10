@@ -352,6 +352,9 @@ void loop(){
         Serial.println("Loading value into data memory...");
         !show_text;
     }
+
+    Serial.println(delay_time, opcode);
+
     switch(state_current){
         case  0x00  :// fetch
                         if(DEBUG){         
@@ -474,5 +477,5 @@ void loop(){
         }
         delay(100);
     */
-    delay(delay_time+200);
+    delay(delay_time+500);
 }
