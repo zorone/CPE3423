@@ -123,14 +123,16 @@ void mux(int input1, int input2, int input3, int output1, int sel ) {
 void add(int input1, int input2, int output1, int sel){
     if (sel==1){
         output1=input1+input2;
+        Serial.print("Register A :");
+        Serial.println(Reg_A,HEX);
     }
-    Serial.print("Register A :");
-    Serial.println(Reg_A,HEX);
 }
 
 void subs(int input1, int input2, int output1, int sel){
     if (sel==1){
         output1=input1-input2;
+        Serial.print("Register A :");
+        Serial.println(Reg_A,HEX);
     }
 }
 
@@ -192,7 +194,7 @@ void control_unit(int mux_sel, int add_sel, int sub_sel, int reg_file_sel, int c
                 reg_file_sel = 0;
                 break;
         default:
-                mux_sel = 0;
+                mux_sel = -1;
                 add_sel = 0;
                 sub_sel = 0;
                 reg_file_sel = 0;
@@ -322,5 +324,5 @@ void loop(){
     }
     delay(100);
   */
- delay(200);
+ delay(500);
 }
