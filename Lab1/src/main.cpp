@@ -61,6 +61,20 @@ byte operand_hi;
 byte operand_lo;
 
 int count;
+
+void mux(int input1, int input2, int input3, int output1, int sel ) {
+  switch (sel){
+    case 0 :  output1 = input1;
+              break;
+    case 1 :  output1 = input2;
+              break;
+    case 2 :  output1 = input3;
+              break;
+    default:  output1 = input1;
+              break;
+  }
+}
+
 void setup(){
   Serial.begin(9600);
   count=0;
