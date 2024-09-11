@@ -234,6 +234,7 @@ void loop(){
     case  0x01  :// decode
                   data_memory_addr=operand_hi<<8;
                   data_memory_addr=data_memory_addr | operand_lo;
+                  command = -1;
                   Serial.println("2) Decode state");
                   switch(opcode){
                     case 0x22:    // RET;
@@ -241,7 +242,6 @@ void loop(){
                                     break;
                     case 0x34:    // ADD A,#data
                                     command = 0;
-                                    control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
                                     // Reg_A = Reg_A+operand_lo;
                                     // Serial.print("Register A :");
                                     // Serial.println(Reg_A,HEX);
@@ -285,7 +285,8 @@ void loop(){
                                     break;
                     default:
                             break;
-                  }
+                  }                
+                  control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
                   state_next=0x02;
                   break;
     case  0x02  :// execute
@@ -299,6 +300,8 @@ void loop(){
                   if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
                   Serial.print("Register PC :");
                   Serial.println(Reg_PC,HEX);
+                  Serial.print("Register A :");
+                  Serial.println(Reg_A,HEX);
                   state_next=0x00;
                   break;
     default:
@@ -319,5 +322,5 @@ void loop(){
     }
     delay(100);
   */
- delay(5000);
+ delay(200);
 }
