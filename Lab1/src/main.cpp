@@ -124,6 +124,8 @@ void add(int input1, int input2, int output1, int sel){
     if (sel==1){
         output1=input1+input2;
     }
+    Serial.print("Register A :");
+    Serial.println(Reg_A,HEX);
 }
 
 void subs(int input1, int input2, int output1, int sel){
@@ -134,8 +136,8 @@ void subs(int input1, int input2, int output1, int sel){
 
 void reg_file(int input1, int output1, int output2, int output3, int output4, int sel){
     switch(sel){
-      case 0:   output1 = input1;
-                output2 = Reg_A;
+      case 0:   output1 = 0;
+                output2 = 0;
                 output3 = 0;
                 output4 = 0;
           break;
@@ -144,15 +146,15 @@ void reg_file(int input1, int output1, int output2, int output3, int output4, in
                 output3 = 0;
                 output4 = 0;
           break;
-      case 2:   output1 = input1;
-                output2 = Reg_A;
-                output3 = 0;
-                output4 = 0;
+      case 2:   output1 = 0;
+                output2 = 0;
+                output3 = input1;
+                output4 = Reg_A;
           break;
       case 3:   output1 = input1;
                 output2 = Reg_A;
-                output3 = 0;
-                output4 = 0;
+                output3 = input1;
+                output4 = Reg_A;
           break;
       default:  output1 = 0;
                 output2 = 0;
@@ -165,6 +167,24 @@ void reg_file(int input1, int output1, int output2, int output3, int output4, in
 void control_unit(int mux_sel, int add_sel, int sub_sel, int reg_file_sel, int command){
     switch (command){
         case 0:
+                mux_sel = 0;
+                add_sel = 0;
+                sub_sel = 0;
+                reg_file_sel = 0;
+                break;
+        case 1:
+                mux_sel = 0;
+                add_sel = 1;
+                sub_sel = 0;
+                reg_file_sel = 1;
+                break;
+        case 2:
+                mux_sel = 0;
+                add_sel = 0;
+                sub_sel = 0;
+                reg_file_sel = 0;
+                break;
+        case 3:
                 mux_sel = 0;
                 add_sel = 0;
                 sub_sel = 0;
@@ -218,8 +238,8 @@ void loop(){
                                     control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
 
                                     // Reg_A = Reg_A+operand_lo;
-                                    Serial.print("Register A :");
-                                    Serial.println(Reg_A,HEX);
+                                    // Serial.print("Register A :");
+                                    // Serial.println(Reg_A,HEX);
                                     break;
                     case 0x44:    // ORL A,#data
                                     Reg_A |= operand_lo;
