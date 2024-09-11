@@ -107,124 +107,99 @@ int data_sub_input2;
 
 int count;
 
-void mux(int input1, int input2, int input3, int output1, int sel ) {
-  switch (sel){
-    case 0 :  output1 = input1;
+void mux() {
+  switch (signal_mux_sel){
+    case 0 :  data_mux_output1 = data_mux_input1;
               break;
-    case 1 :  output1 = input2;
+    case 1 :  data_mux_output1 = data_mux_input2;
               break;
-    case 2 :  output1 = input3;
+    case 2 :  data_mux_output1 = data_mux_input3;
               break;
-    default:  output1 = input1;
+    default:  data_mux_output1 = data_mux_input1;
               break;
     }
-    Serial.printf("data_mux_input1: %d", input1);
-    Serial.printf(", data_mux_input2: %d", input2);
-    Serial.printf(", data_mux_input3: %d", input3);
-    Serial.printf(", data_mux_output1: %d", output1);
-    Serial.printf(", data_mux_sel: %d\n", sel);
 }
 
-void add(int input1, int input2, int output1, int sel){
-    if (sel==1){
-        output1=input1+input2;
+void add(){
+    if (signal_add_sel==1){
+        data_add_output1=data_add_input1+data_add_input2;
         Serial.print("Register A :");
         Serial.println(Reg_A,HEX);
     }
-    Serial.printf("data_add_input1: %d", input1);
-    Serial.printf(", data_add_input2: %d", input2);
-    Serial.printf(", data_add_output1: %d", output1);
-    Serial.printf(", data_add_sel: %d\n", sel);
 }
 
-void subs(int input1, int input2, int output1, int sel){
-    if (sel==1){
-        output1=input1-input2;
+void subs(){
+    if (signal_sub_sel==1){
+        data_sub_output1=data_sub_input1-data_sub_input2;
         Serial.print("Register A :");
         Serial.println(Reg_A,HEX);
     }
-    Serial.printf("data_sub_input1: %d", input1);
-    Serial.printf(", data_sub_input2: %d", input2);
-    Serial.printf(", data_sub_output1: %d", output1);
-    Serial.printf(", data_sub_sel: %d\n", sel);
 }
 
-void reg_file(int input1, int output1, int output2, int output3, int output4, int sel){
-    switch(sel){
-      case 0:   output1 = 0;
-                output2 = 0;
-                output3 = 0;
-                output4 = 0;
-                Reg_A   = input1;
+void reg_file(){
+    switch(signal_reg_file_sel){
+      case 0:   data_reg_file_output1 = 0;
+                data_reg_file_output2 = 0;
+                data_reg_file_output3 = 0;
+                data_reg_file_output4 = 0;
+                Reg_A   = data_reg_file_input1;
           break;
-      case 1:   output1 = input1;
-                output2 = Reg_A;
-                output3 = 0;
-                output4 = 0;
+      case 1:   data_reg_file_output1 = data_reg_file_input1;
+                data_reg_file_output2 = Reg_A;
+                data_reg_file_output3 = 0;
+                data_reg_file_output4 = 0;
           break;
-      case 2:   output1 = 0;
-                output2 = 0;
-                output3 = input1;
-                output4 = Reg_A;
+      case 2:   data_reg_file_output1 = 0;
+                data_reg_file_output2 = 0;
+                data_reg_file_output3 = data_reg_file_input1;
+                data_reg_file_output4 = Reg_A;
           break;
-      case 3:   output1 = input1;
-                output2 = Reg_A;
-                output3 = input1;
-                output4 = Reg_A;
+      case 3:   data_reg_file_output1 = data_reg_file_input1;
+                data_reg_file_output2 = Reg_A;
+                data_reg_file_output3 = data_reg_file_input1;
+                data_reg_file_output4 = Reg_A;
           break;
-      default:  output1 = 0;
-                output2 = 0;
-                output3 = 0;
-                output4 = 0;
+      default:  data_reg_file_output1 = 0;
+                data_reg_file_output2 = 0;
+                data_reg_file_output3 = 0;
+                data_reg_file_output4 = 0;
           break;
     }
-    Serial.printf("Reg_A: %d", Reg_A);
-    Serial.printf(", data_reg_file_input1: %d", input1);
-    Serial.printf(", data_reg_file_output1: %d", output1);
-    Serial.printf(", data_reg_file_output2: %d", output2);
-    Serial.printf(", data_reg_file_output3: %d", output3);
-    Serial.printf(", data_reg_file_output4: %d", output4);
-    Serial.printf(", data_reg_file_sel: %d\n", sel);
 }
 
-void control_unit(int mux_sel, int add_sel, int sub_sel, int reg_file_sel, int command){
+void control_unit(){
     switch (command){
         case 0:
-                mux_sel = 0;
-                add_sel = 1;
-                sub_sel = 0;
-                reg_file_sel = 1;
+                signal_mux_sel = 0;
+                signal_add_sel = 1;
+                signal_sub_sel = 0;
+                signal_reg_file_sel = 1;
                 break;
         case 1:
-                mux_sel = 0;
-                add_sel = 0;
-                sub_sel = 1;
-                reg_file_sel = 2;
+                signal_mux_sel = 0;
+                signal_add_sel = 0;
+                signal_sub_sel = 1;
+                signal_reg_file_sel = 2;
                 break;
         case 2:
-                mux_sel = 1;
-                add_sel = 0;
-                sub_sel = 0;
-                reg_file_sel = 0;
+                signal_mux_sel = 1;
+                signal_add_sel = 0;
+                signal_sub_sel = 0;
+                signal_reg_file_sel = 0;
                 break;
         case 3:
-                mux_sel = 2;
-                add_sel = 0;
-                sub_sel = 0;
-                reg_file_sel = 0;
+                signal_mux_sel = 2;
+                signal_add_sel = 0;
+                signal_sub_sel = 0;
+                signal_reg_file_sel = 0;
                 break;
         default:
-                mux_sel = -1;
-                add_sel = 0;
-                sub_sel = 0;
-                reg_file_sel = 0;
+                signal_mux_sel = -1;
+                signal_add_sel = 0;
+                signal_sub_sel = 0;
+                signal_reg_file_sel = 0;
                 break;
     }
-    Serial.printf("signal_mux_sel: %d", mux_sel);
-    Serial.printf(", signal_add_sel: %d", add_sel);
-    Serial.printf(", signal_sub_sel: %d", sub_sel);
-    Serial.printf(", signal_reg_file_sel: %d", reg_file_sel);
-    Serial.printf(", command: %d\n", command);
 }
 
 void setup(){
@@ -244,19 +219,19 @@ void loop(){
                   operand_hi=prog_mem_add[Reg_PC+1];
                   operand_lo=prog_mem_add[Reg_PC+2];
                   command += 2;
-                  control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
+                  control_unit();
                   Serial.printf("signal_mux_sel: %d", signal_mux_sel);
                   Serial.printf(", signal_add_sel: %d", signal_add_sel);
                   Serial.printf(", signal_sub_sel: %d", signal_sub_sel);
                   Serial.printf(", signal_reg_file_sel: %d", signal_reg_file_sel);
                   Serial.printf(", command: %d\n", command);
-                  mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
+                  mux();
                   Serial.printf("data_mux_input1: %d", data_mux_input1);
                   Serial.printf(", data_mux_input2: %d", data_mux_input2);
                   Serial.printf(", data_mux_input3: %d", data_mux_input3);
                   Serial.printf(", data_mux_output1: %d", data_mux_output1);
                   Serial.printf(", data_mux_sel: %d\n", signal_mux_sel);
-                  reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
+                  reg_file();
                   Serial.printf("data_reg_file_input1: %d", data_reg_file_input1);
                   Serial.printf(", data_reg_file_output1: %d", data_reg_file_output1);
                   Serial.printf(", data_reg_file_output2: %d", data_reg_file_output2);
@@ -329,7 +304,7 @@ void loop(){
                     default:
                             break;
                   }                
-                  control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
+                  control_unit();
                   Serial.printf("signal_mux_sel: %d", signal_mux_sel);
                   Serial.printf(", signal_add_sel: %d", signal_add_sel);
                   Serial.printf(", signal_sub_sel: %d", signal_sub_sel);
@@ -339,25 +314,25 @@ void loop(){
                   break;
     case  0x02  :// execute
                   data_mux_input1 = operand_lo;
-                  mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
+                  mux();
                   Serial.printf("data_mux_input1: %d", data_mux_input1);
                   Serial.printf(", data_mux_input2: %d", data_mux_input2);
                   Serial.printf(", data_mux_input3: %d", data_mux_input3);
                   Serial.printf(", data_mux_output1: %d", data_mux_output1);
                   Serial.printf(", data_mux_sel: %d\n", signal_mux_sel);
-                  reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
+                  reg_file();
                   Serial.printf("data_reg_file_input1: %d", data_reg_file_input1);
                   Serial.printf(", data_reg_file_output1: %d", data_reg_file_output1);
                   Serial.printf(", data_reg_file_output2: %d", data_reg_file_output2);
                   Serial.printf(", data_reg_file_output3: %d", data_reg_file_output3);
                   Serial.printf(", data_reg_file_output4: %d", data_reg_file_output4);
                   Serial.printf(", data_reg_file_sel: %d\n", signal_reg_file_sel);
-                  add(data_add_input1, data_add_input2, data_add_output1, signal_add_sel);
+                  add();
                   Serial.printf("data_add_input1: %d", data_add_input1);
                   Serial.printf(", data_add_input2: %d", data_add_input2);
                   Serial.printf(", data_add_output1: %d", data_add_output1);
                   Serial.printf(", data_add_sel: %d\n", signal_add_sel);
-                  subs(data_sub_input1, data_sub_input2, data_sub_output1, signal_sub_sel);
+                  subs();
                   Serial.printf("data_sub_input1: %d", data_sub_input1);
                   Serial.printf(", data_sub_input2: %d", data_sub_input2);
                   Serial.printf(", data_sub_output1: %d", data_sub_output1);
