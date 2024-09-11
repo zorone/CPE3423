@@ -118,6 +118,7 @@ void mux() {
     default:  data_mux_output1 = data_mux_input1;
               break;
     }
+    data_reg_file_input1 = data_mux_output1;
 }
 
 void add(){
@@ -126,6 +127,7 @@ void add(){
         Serial.print("Register A :");
         Serial.println(Reg_A,HEX);
     }
+    data_mux_input2 = data_add_output1;
 }
 
 void subs(){
@@ -134,6 +136,7 @@ void subs(){
         Serial.print("Register A :");
         Serial.println(Reg_A,HEX);
     }
+    data_mux_input3 = data_sub_output1;
 }
 
 void reg_file(){
@@ -165,6 +168,10 @@ void reg_file(){
                 data_reg_file_output4 = 0;
           break;
     }
+    data_add_input1 = data_reg_file_output1;
+    data_add_input2 = data_reg_file_output2;
+    data_sub_input1 = data_reg_file_output3;
+    data_sub_input2 = data_reg_file_output4;
 }
 
 void control_unit(){
