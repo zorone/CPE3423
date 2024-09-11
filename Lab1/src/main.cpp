@@ -57,7 +57,7 @@ unsigned int data_memory_addr;
 byte Reg_A;
 byte Reg_B;
 
-byte Reg_PC;    // program counter Register
+uint16_t Reg_PC;    // program counter Register
 byte Reg_R0;
 
 /********************************************************************************/
@@ -220,6 +220,9 @@ void setup(){
 
 void loop(){
   /************************ start state machine ********************************/
+
+    // https://stackoverflow.com/questions/14733761/printf-formatting-for-hexadecimal
+    
   switch(state_current){
     case  0x00  :// fetch
                   opcode=prog_mem_add[Reg_PC];
@@ -229,68 +232,62 @@ void loop(){
                   control_unit();
                   mux();
                   reg_file();
-                  Serial.println("1) Fetch state:");
-                  Serial.print("opcode    :");
-                  Serial.println(opcode,HEX);
-                  Serial.print("opcode_hi :");
-                  Serial.println(operand_hi,HEX);
-                  Serial.print("opcode_lo :");
-                  Serial.println(operand_lo,HEX);
-                  Serial.print("Register A :");
-                  Serial.println(Reg_A,HEX);
+                  Serial.printf("Register A : %#04x\n", Reg_A);
                   state_next=0x01;
                   break;
     case  0x01  :// decode
+                  Serial.printf("opcode: %#04x, PC: %#06x ", program_mem[Reg_PC], Reg_PC);
+
                   data_memory_addr=operand_hi<<8;
                   data_memory_addr=data_memory_addr | operand_lo;
                   command = -1;
-                  Serial.println("2) Decode state");
                   switch(opcode){
+                    case 0x14:    // DEC A;
+                                    Reg_A--;
+                                    Serial.printf("Reg_A: %#04x\n", Reg_A);
+                                    break;
                     case 0x22:    // RET;
                                     Reg_PC = 0x00;
+                                    Serial.printf("Reg_PC: %#06x\n", Reg_PC);
                                     break;
                     case 0x34:    // ADD A,#data
                                     command = 0;
+                                    Serial.printf("Register A : %#04x\n", Reg_A);
                                     // Reg_A = Reg_A+operand_lo;
                                     // Serial.print("Register A :");
                                     // Serial.println(Reg_A,HEX);
                                     break;
                     case 0x44:    // ORL A,#data
                                     Reg_A |= operand_lo;
-                                    Serial.print("Register A :");
-                                    Serial.println(Reg_A,HEX);
+                                    Serial.printf("Register A : %#04x\n", Reg_A);
                                     break;
                     case 0x54:    // AND A,#data
                                     Reg_A &= operand_lo;
-                                    Serial.print("Register A :");
-                                    Serial.println(Reg_A,HEX);
+                                    Serial.printf("Register A : %#04x\n", Reg_A);
                                     break;
                     case 0x74:    // MOV A, #data
                                     Reg_A = operand_lo;
-                                    Serial.print("Register A :");
-                                    Serial.println(Reg_A,HEX);
+                                    Serial.printf("Register A : %#04x\n", Reg_A);
                                     break;
                     case 0x88:    // MOV data addr,R0
                                     data_memory[data_memory_addr] = Reg_R0;
-                                    Serial.print("Data memory[");
-                                    Serial.print(data_memory_addr);
-                                    Serial.print("]:");
-                                    Serial.println(data_memory[data_memory_addr],HEX);
+                                    Serial.printf("Data memory[%#04x]: %#04x\n", data_memory_addr, data_memory[data_memory_addr]);
                                     break;
                     case 0xA8:    // MOV R0, data addr
                                     Reg_R0 = data_memory[data_memory_addr];
-                                    Serial.print("Data memory[");
-                                    Serial.print(data_memory_addr);
-                                    Serial.print("]:");
-                                    Serial.println(Reg_R0,HEX);
+                                    Serial.printf("Data memory[%#04x]: %#04x\n", data_memory_addr, data_memory[data_memory_addr]);
+                                    break;
+                    case 0xF5:    // MOV data addr, A;
+                                    data_memory[data_memory_addr] = Reg_A;
+                                    Serial.printf("Data memory[%#04x]: %#04x\n", data_memory_addr, Reg_A);
                                     break;
                     case 0xF8:    // MOV R0, A;
                                     Reg_R0 = Reg_A;
-                                    Serial.print("Register R0 :");
-                                    Serial.println(Reg_R0,HEX);
+                                    Serial.printf("Register R0 : %#04x\n", Reg_R0);
                                     break;
                     case 0xFF:    // MOV PC, #0x00;
                                     Reg_PC = 0x00;
+                                    Serial.printf("Reg_PC: %#06x\n", Reg_PC);
                                     break;
                     default:
                             break;
@@ -321,15 +318,15 @@ void loop(){
   state_current = state_next;
   /************************* end state machine *********************************/
 
-  /**
-    Serial.print("loop: ");
-    Serial.println(count);
-    if(count>=65535){
-      count =0;
-    }else{
-      count++;
-    }
+    /**
+        Serial.print("loop: ");
+        Serial.println(count);
+        if(count>=65535){
+            count =0;
+        }else{
+            count++;
+        }
+        delay(100);
+    */
     delay(100);
-  */
- delay(500);
 }
