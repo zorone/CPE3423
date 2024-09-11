@@ -146,6 +146,7 @@ void reg_file(){
                 data_reg_file_output3 = 0;
                 data_reg_file_output4 = 0;
                 Reg_A   = data_reg_file_input1;
+                Serial.printf("Register A : %#04x\n", Reg_A);
           break;
       case 1:   data_reg_file_output1 = data_reg_file_input1;
                 data_reg_file_output2 = Reg_A;
@@ -232,7 +233,6 @@ void loop(){
                   control_unit();
                   mux();
                   reg_file();
-                  Serial.printf("Register A : %#04x\n", Reg_A);
                   state_next=0x01;
                   break;
     case  0x01  :// decode
@@ -252,7 +252,7 @@ void loop(){
                                     break;
                     case 0x34:    // ADD A,#data
                                     command = 0;
-                                    Serial.printf("Register A : %#04x\n", Reg_A);
+                                    // Serial.printf("Register A : %#04x\n", Reg_A);    // will show when trigger reg_file()
                                     // Reg_A = Reg_A+operand_lo;
                                     // Serial.print("Register A :");
                                     // Serial.println(Reg_A,HEX);
@@ -302,12 +302,7 @@ void loop(){
                   add();
                   subs();
 
-                  Serial.println("3) Execute state");
                   if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
-                  Serial.print("Register PC :");
-                  Serial.println(Reg_PC,HEX);
-                  Serial.print("Register A :");
-                  Serial.println(Reg_A,HEX);
                   state_next=0x00;
                   break;
     default:
