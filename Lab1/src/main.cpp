@@ -218,8 +218,8 @@ void loop(){
                                     control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
 
                                     // Reg_A = Reg_A+operand_lo;
-                                    // Serial.print("Register A :");
-                                    // Serial.println(Reg_A,HEX);
+                                    Serial.print("Register A :");
+                                    Serial.println(Reg_A,HEX);
                                     break;
                     case 0x44:    // ORL A,#data
                                     Reg_A |= operand_lo;
