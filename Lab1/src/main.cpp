@@ -212,6 +212,8 @@ void loop(){
   /************************ start state machine ********************************/
   switch(state_current){
     case  0x00  :// fetch
+                  command = 0;
+                  control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
                   opcode=prog_mem_add[Reg_PC];
                   operand_hi=prog_mem_add[Reg_PC+1];
                   operand_lo=prog_mem_add[Reg_PC+2];
@@ -235,9 +237,6 @@ void loop(){
                                     Reg_PC = 0x00;
                                     break;
                     case 0x34:    // ADD A,#data
-                                    command = 0;
-                                    control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
-
                                     // Reg_A = Reg_A+operand_lo;
                                     // Serial.print("Register A :");
                                     // Serial.println(Reg_A,HEX);
