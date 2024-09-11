@@ -61,7 +61,7 @@ byte operand_hi;
 byte operand_lo;
 
 /********************************************************************************/
-/*                            signal                              */
+/*                                   signal                                     */
 /********************************************************************************/
 int signal_mux_sel;
 int signal_add_sel;
@@ -70,7 +70,7 @@ int signal_reg_file_sel;
 int command;
 
 /********************************************************************************/
-/*                            data path mux                              */
+/*                               data path mux                                  */
 /********************************************************************************/
 int data_mux_input1;
 int data_mux_input2;
@@ -78,7 +78,7 @@ int data_mux_input3;
 int data_mux_output1;
 
 /********************************************************************************/
-/*                            data path register file                              */
+/*                          data path register file                             */
 /********************************************************************************/
 int data_reg_file_input1;
 int data_reg_file_output1;
@@ -87,7 +87,7 @@ int data_reg_file_output3;
 int data_reg_file_output4;
 
 /********************************************************************************/
-/*                            data path register file                              */
+/*                          data path register file                             */
 /********************************************************************************/
 int data_add_output1;
 int data_add_input1;
@@ -260,10 +260,10 @@ void loop(){
                   add(data_add_input1, data_add_input2, data_add_output1, signal_add_sel);
                   subs(data_sub_input1, data_sub_input2, data_sub_output1, signal_sub_sel);
 
-                  // Serial.println("3) Execute state");
-                  // if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
-                  // Serial.print("Register PC :");
-                  // Serial.println(Reg_PC,HEX);
+                  Serial.println("3) Execute state");
+                  if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
+                  Serial.print("Register PC :");
+                  Serial.println(Reg_PC,HEX);
                   state_next=0x00;
                   break;
     default:
