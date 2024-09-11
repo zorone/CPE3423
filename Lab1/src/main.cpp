@@ -197,7 +197,7 @@ void control_unit(){
                 signal_mux_sel = -1;
                 signal_add_sel = 0;
                 signal_sub_sel = 0;
-                signal_reg_file_sel = 0;
+                signal_reg_file_sel = -1;
                 break;
     }
 }
