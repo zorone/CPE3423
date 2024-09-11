@@ -140,6 +140,7 @@ void reg_file(int input1, int output1, int output2, int output3, int output4, in
                 output2 = 0;
                 output3 = 0;
                 output4 = 0;
+                Reg_A   = input1;
           break;
       case 1:   output1 = input1;
                 output2 = Reg_A;
@@ -212,11 +213,13 @@ void loop(){
   /************************ start state machine ********************************/
   switch(state_current){
     case  0x00  :// fetch
-                  command = 0;
-                  control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
                   opcode=prog_mem_add[Reg_PC];
                   operand_hi=prog_mem_add[Reg_PC+1];
                   operand_lo=prog_mem_add[Reg_PC+2];
+                  command += 2;
+                  control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
+                  mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
+                  reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
                   Serial.println("1) Fetch state:");
                   Serial.print("opcode    :");
                   Serial.println(opcode,HEX);
@@ -237,6 +240,8 @@ void loop(){
                                     Reg_PC = 0x00;
                                     break;
                     case 0x34:    // ADD A,#data
+                                    command = 0;
+                                    control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
                                     // Reg_A = Reg_A+operand_lo;
                                     // Serial.print("Register A :");
                                     // Serial.println(Reg_A,HEX);
@@ -295,11 +300,6 @@ void loop(){
                   Serial.println(Reg_PC,HEX);
                   state_next=0x00;
                   break;
-    case 0x04   :// Memory
-                  command += 2;
-                  control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
-                  mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
-                  reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
     default:
       Serial.println("Unknown state");
       state_next=0x00;
