@@ -297,7 +297,10 @@ void loop(){
                   state_next=0x00;
                   break;
     case 0x04   :// Memory
+                  command += 2;
                   control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
+                  mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
+                  reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
     default:
       Serial.println("Unknown state");
       state_next=0x00;
