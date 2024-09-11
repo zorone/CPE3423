@@ -289,6 +289,7 @@ void loop(){
                   state_next=0x02;
                   break;
     case  0x02  :// execute
+                  data_mux_input1 = operand_lo;
                   mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
                   reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
                   add(data_add_input1, data_add_input2, data_add_output1, signal_add_sel);
