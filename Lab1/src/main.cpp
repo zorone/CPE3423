@@ -124,8 +124,6 @@ void mux() {
 void add(){
     if (signal_add_sel==1){
         data_add_output1=data_add_input1+data_add_input2;
-        Serial.print("Register A :");
-        Serial.println(Reg_A,HEX);
     }
     data_mux_input2 = data_add_output1;
 }
@@ -133,8 +131,6 @@ void add(){
 void subs(){
     if (signal_sub_sel==1){
         data_sub_output1=data_sub_input1-data_sub_input2;
-        Serial.print("Register A :");
-        Serial.println(Reg_A,HEX);
     }
     data_mux_input3 = data_sub_output1;
 }
