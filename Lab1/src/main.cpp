@@ -117,7 +117,12 @@ void mux(int input1, int input2, int input3, int output1, int sel ) {
               break;
     default:  output1 = input1;
               break;
-  }
+    }
+    Serial.print("data_mux_input1: " + input1);
+    Serial.print(", data_mux_input2: " + input2);
+    Serial.print(", data_mux_input3: " + input3);
+    Serial.print(", data_mux_output1: " + output1);
+    Serial.println(", data_mux_sel: " + sel);
 }
 
 void add(int input1, int input2, int output1, int sel){
@@ -126,6 +131,10 @@ void add(int input1, int input2, int output1, int sel){
         Serial.print("Register A :");
         Serial.println(Reg_A,HEX);
     }
+    Serial.print("data_add_input1: " + input1);
+    Serial.print(", data_add_input2: " + input2);
+    Serial.print(", data_add_output1: " + output1);
+    Serial.println(", data_add_sel: " + sel);
 }
 
 void subs(int input1, int input2, int output1, int sel){
@@ -134,6 +143,10 @@ void subs(int input1, int input2, int output1, int sel){
         Serial.print("Register A :");
         Serial.println(Reg_A,HEX);
     }
+    Serial.print("data_sub_input1: " + input1);
+    Serial.print(", data_sub_input2: " + input2);
+    Serial.print(", data_sub_output1: " + output1);
+    Serial.println(", data_sub_sel: " + sel);
 }
 
 void reg_file(int input1, int output1, int output2, int output3, int output4, int sel){
@@ -165,6 +178,13 @@ void reg_file(int input1, int output1, int output2, int output3, int output4, in
                 output4 = 0;
           break;
     }
+    Serial.print("Reg_A: " + Reg_A);
+    Serial.print(", data_reg_file_input1: " + input1);
+    Serial.print(", data_reg_file_output1: " + output1);
+    Serial.print(", data_reg_file_output2: " + output2);
+    Serial.print(", data_reg_file_output3: " + output3);
+    Serial.print(", data_reg_file_output4: " + output4);
+    Serial.println(", data_reg_file_sel: " + sel);
 }
 
 void control_unit(int mux_sel, int add_sel, int sub_sel, int reg_file_sel, int command){
@@ -200,6 +220,11 @@ void control_unit(int mux_sel, int add_sel, int sub_sel, int reg_file_sel, int c
                 reg_file_sel = 0;
                 break;
     }
+    Serial.print("signal_mux_sel: " + mux_sel);
+    Serial.print(", signal_add_sel: " + add_sel);
+    Serial.print(", signal_sub_sel: " + sub_sel);
+    Serial.print(", signal_reg_file_sel: " + reg_file_sel);
+    Serial.println(", command: " + command);
 }
 
 void setup(){
@@ -220,8 +245,24 @@ void loop(){
                   operand_lo=prog_mem_add[Reg_PC+2];
                   command += 2;
                   control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
+                  Serial.print("signal_mux_sel: " + signal_mux_sel);
+                  Serial.print(", signal_add_sel: " + signal_add_sel);
+                  Serial.print(", signal_sub_sel: " + signal_sub_sel);
+                  Serial.print(", signal_reg_file_sel: " + signal_reg_file_sel);
+                  Serial.println(", command: " + command);
                   mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
+                  Serial.print("data_mux_input1: " + data_mux_input1);
+                  Serial.print(", data_mux_input2: " + data_mux_input2);
+                  Serial.print(", data_mux_input3: " + data_mux_input3);
+                  Serial.print(", data_mux_output1: " + data_mux_output1);
+                  Serial.println(", data_mux_sel: " + signal_mux_sel);
                   reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
+                  Serial.print(", data_reg_file_input1: " + data_reg_file_input1);
+                  Serial.print(", data_reg_file_output1: " + data_reg_file_output1);
+                  Serial.print(", data_reg_file_output2: " + data_reg_file_output2);
+                  Serial.print(", data_reg_file_output3: " + data_reg_file_output3);
+                  Serial.print(", data_reg_file_output4: " + data_reg_file_output4);
+                  Serial.println(", data_reg_file_sel: " + signal_reg_file_sel);
                   Serial.println("1) Fetch state:");
                   Serial.print("opcode    :");
                   Serial.println(opcode,HEX);
@@ -289,14 +330,38 @@ void loop(){
                             break;
                   }                
                   control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
+                  Serial.print("signal_mux_sel: " + signal_mux_sel);
+                  Serial.print(", signal_add_sel: " + signal_add_sel);
+                  Serial.print(", signal_sub_sel: " + signal_sub_sel);
+                  Serial.print(", signal_reg_file_sel: " + signal_reg_file_sel);
+                  Serial.println(", command: " + command);
                   state_next=0x02;
                   break;
     case  0x02  :// execute
                   data_mux_input1 = operand_lo;
                   mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
+                  Serial.print("data_mux_input1: " + data_mux_input1);
+                  Serial.print(", data_mux_input2: " + data_mux_input2);
+                  Serial.print(", data_mux_input3: " + data_mux_input3);
+                  Serial.print(", data_mux_output1: " + data_mux_output1);
+                  Serial.println(", data_mux_sel: " + signal_mux_sel);
                   reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
+                  Serial.print(", data_reg_file_input1: " + data_reg_file_input1);
+                  Serial.print(", data_reg_file_output1: " + data_reg_file_output1);
+                  Serial.print(", data_reg_file_output2: " + data_reg_file_output2);
+                  Serial.print(", data_reg_file_output3: " + data_reg_file_output3);
+                  Serial.print(", data_reg_file_output4: " + data_reg_file_output4);
+                  Serial.println(", data_reg_file_sel: " + signal_reg_file_sel);
                   add(data_add_input1, data_add_input2, data_add_output1, signal_add_sel);
+                  Serial.print("data_add_input1: " + data_add_input1);
+                  Serial.print(", data_add_input2: " + data_add_input2);
+                  Serial.print(", data_add_output1: " + data_add_output1);
+                  Serial.println(", data_add_sel: " + signal_add_sel);
                   subs(data_sub_input1, data_sub_input2, data_sub_output1, signal_sub_sel);
+                  Serial.print("data_sub_input1: " + data_sub_input1);
+                  Serial.print(", data_sub_input2: " + data_sub_input2);
+                  Serial.print(", data_sub_output1: " + data_sub_output1);
+                  Serial.println(", data_sub_sel: " + signal_sub_sel);
 
                   Serial.println("3) Execute state");
                   if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
