@@ -168,24 +168,24 @@ void control_unit(int mux_sel, int add_sel, int sub_sel, int reg_file_sel, int c
     switch (command){
         case 0:
                 mux_sel = 0;
-                add_sel = 0;
-                sub_sel = 0;
-                reg_file_sel = 0;
-                break;
-        case 1:
-                mux_sel = 0;
                 add_sel = 1;
                 sub_sel = 0;
                 reg_file_sel = 1;
                 break;
-        case 2:
+        case 1:
                 mux_sel = 0;
+                add_sel = 0;
+                sub_sel = 1;
+                reg_file_sel = 2;
+                break;
+        case 2:
+                mux_sel = 1;
                 add_sel = 0;
                 sub_sel = 0;
                 reg_file_sel = 0;
                 break;
         case 3:
-                mux_sel = 0;
+                mux_sel = 2;
                 add_sel = 0;
                 sub_sel = 0;
                 reg_file_sel = 0;
@@ -235,6 +235,7 @@ void loop(){
                                     Reg_PC = 0x00;
                                     break;
                     case 0x34:    // ADD A,#data
+                                    command = 0;
                                     control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
 
                                     // Reg_A = Reg_A+operand_lo;
@@ -295,6 +296,8 @@ void loop(){
                   Serial.println(Reg_PC,HEX);
                   state_next=0x00;
                   break;
+    case 0x04   :// Memory
+                  control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
     default:
       Serial.println("Unknown state");
       state_next=0x00;
