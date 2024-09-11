@@ -60,6 +60,42 @@ byte opcode;
 byte operand_hi;
 byte operand_lo;
 
+/********************************************************************************/
+/*                            signal                              */
+/********************************************************************************/
+int signal_mux_sel;
+int signal_add_sel;
+int signal_sub_sel;
+int signal_reg_file_sel;
+int command;
+
+/********************************************************************************/
+/*                            data path mux                              */
+/********************************************************************************/
+int data_mux_input1;
+int data_mux_input2;
+int data_mux_input3;
+int data_mux_output1;
+
+/********************************************************************************/
+/*                            data path register file                              */
+/********************************************************************************/
+int data_reg_file_input1;
+int data_reg_file_output1;
+int data_reg_file_output2;
+int data_reg_file_output3;
+int data_reg_file_output4;
+
+/********************************************************************************/
+/*                            data path register file                              */
+/********************************************************************************/
+int data_add_output1;
+int data_add_input1;
+int data_add_input2;
+int data_sub_output1;
+int data_sub_input1;
+int data_sub_input2;
+
 int count;
 
 void mux(int input1, int input2, int input3, int output1, int sel ) {
@@ -73,6 +109,65 @@ void mux(int input1, int input2, int input3, int output1, int sel ) {
     default:  output1 = input1;
               break;
   }
+}
+
+void add(int input1, int input2, int output1, int sel){
+    if (sel==1){
+        output1=input1+input2;
+    }
+}
+
+void subs(int input1, int input2, int output1, int sel){
+    if (sel==1){
+        output1=input1-input2;
+    }
+}
+
+void reg_file(int input1, int output1, int output2, int output3, int output4, int sel){
+    switch(sel){
+      case 0:   output1 = input1;
+                output2 = Reg_A;
+                output3 = 0;
+                output4 = 0;
+          break;
+      case 1:   output1 = input1;
+                output2 = Reg_A;
+                output3 = 0;
+                output4 = 0;
+          break;
+      case 2:   output1 = input1;
+                output2 = Reg_A;
+                output3 = 0;
+                output4 = 0;
+          break;
+      case 3:   output1 = input1;
+                output2 = Reg_A;
+                output3 = 0;
+                output4 = 0;
+          break;
+      default:  output1 = 0;
+                output2 = 0;
+                output3 = 0;
+                output4 = 0;
+          break;
+    }
+}
+
+void control_unit(int mux_sel, int add_sel, int sub_sel, int reg_file_sel, int command){
+    switch (command){
+        case 0:
+                mux_sel = 0;
+                add_sel = 0;
+                sub_sel = 0;
+                reg_file_sel = 0;
+                break;
+        default:
+                mux_sel = 0;
+                add_sel = 0;
+                sub_sel = 0;
+                reg_file_sel = 0;
+                break;
+    }
 }
 
 void setup(){
@@ -111,9 +206,11 @@ void loop(){
                                     Reg_PC = 0x00;
                                     break;
                     case 0x34:    // ADD A,#data
-                                    Reg_A = Reg_A+operand_lo;
-                                    Serial.print("Register A :");
-                                    Serial.println(Reg_A,HEX);
+                                    control_unit(signal_mux_sel, signal_add_sel, signal_sub_sel, signal_reg_file_sel, command);
+
+                                    // Reg_A = Reg_A+operand_lo;
+                                    // Serial.print("Register A :");
+                                    // Serial.println(Reg_A,HEX);
                                     break;
                     case 0x44:    // ORL A,#data
                                     Reg_A |= operand_lo;
@@ -158,10 +255,15 @@ void loop(){
                   state_next=0x02;
                   break;
     case  0x02  :// execute
-                  Serial.println("3) Execute state");
-                  if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
-                  Serial.print("Register PC :");
-                  Serial.println(Reg_PC,HEX);
+                  mux(data_mux_input1, data_mux_input2, data_mux_input3, data_mux_output1, signal_mux_sel);
+                  reg_file(data_reg_file_input1, data_reg_file_output1, data_reg_file_output2, data_reg_file_output3, data_reg_file_output4, signal_reg_file_sel);
+                  add(data_add_input1, data_add_input2, data_add_output1, signal_add_sel);
+                  subs(data_sub_input1, data_sub_input2, data_sub_output1, signal_sub_sel);
+
+                  // Serial.println("3) Execute state");
+                  // if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
+                  // Serial.print("Register PC :");
+                  // Serial.println(Reg_PC,HEX);
                   state_next=0x00;
                   break;
     default:
