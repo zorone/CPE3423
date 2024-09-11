@@ -34,6 +34,15 @@ byte program_mem[30] = { 0x74,
                         0xFF,
                         0x00,
                         0x00};
+byte prog_mem_add[9] =  { 0x74,
+                        0x00,
+                        0x0A,
+                        0x34,
+                        0x00,
+                        0x01,
+                        0xFF,
+                        0x00,
+                        0x00};
 
 /********************************************************************************/
 /*                       Data Memory    8 bit  b address                        */
@@ -183,9 +192,9 @@ void loop(){
   /************************ start state machine ********************************/
   switch(state_current){
     case  0x00  :// fetch
-                  opcode=program_mem[Reg_PC];
-                  operand_hi=program_mem[Reg_PC+1];
-                  operand_lo=program_mem[Reg_PC+2];
+                  opcode=prog_mem_add[Reg_PC];
+                  operand_hi=prog_mem_add[Reg_PC+1];
+                  operand_lo=prog_mem_add[Reg_PC+2];
                   Serial.println("1) Fetch state:");
                   Serial.print("opcode    :");
                   Serial.println(opcode,HEX);
