@@ -225,26 +225,10 @@ void loop(){
                   opcode=prog_mem_add[Reg_PC];
                   operand_hi=prog_mem_add[Reg_PC+1];
                   operand_lo=prog_mem_add[Reg_PC+2];
-                  command += 2;
+                  command += 2;  // Increment command by 2, this is by architecture design
                   control_unit();
-                  Serial.printf("signal_mux_sel: %d", signal_mux_sel);
-                  Serial.printf(", signal_add_sel: %d", signal_add_sel);
-                  Serial.printf(", signal_sub_sel: %d", signal_sub_sel);
-                  Serial.printf(", signal_reg_file_sel: %d", signal_reg_file_sel);
-                  Serial.printf(", command: %d\n", command);
                   mux();
-                  Serial.printf("data_mux_input1: %d", data_mux_input1);
-                  Serial.printf(", data_mux_input2: %d", data_mux_input2);
-                  Serial.printf(", data_mux_input3: %d", data_mux_input3);
-                  Serial.printf(", data_mux_output1: %d", data_mux_output1);
-                  Serial.printf(", data_mux_sel: %d\n", signal_mux_sel);
                   reg_file();
-                  Serial.printf("data_reg_file_input1: %d", data_reg_file_input1);
-                  Serial.printf(", data_reg_file_output1: %d", data_reg_file_output1);
-                  Serial.printf(", data_reg_file_output2: %d", data_reg_file_output2);
-                  Serial.printf(", data_reg_file_output3: %d", data_reg_file_output3);
-                  Serial.printf(", data_reg_file_output4: %d", data_reg_file_output4);
-                  Serial.printf(", data_reg_file_sel: %d\n", signal_reg_file_sel);
                   Serial.println("1) Fetch state:");
                   Serial.print("opcode    :");
                   Serial.println(opcode,HEX);
@@ -312,38 +296,14 @@ void loop(){
                             break;
                   }                
                   control_unit();
-                  Serial.printf("signal_mux_sel: %d", signal_mux_sel);
-                  Serial.printf(", signal_add_sel: %d", signal_add_sel);
-                  Serial.printf(", signal_sub_sel: %d", signal_sub_sel);
-                  Serial.printf(", signal_reg_file_sel: %d", signal_reg_file_sel);
-                  Serial.printf(", command: %d\n", command);
                   state_next=0x02;
                   break;
     case  0x02  :// execute
                   data_mux_input1 = operand_lo;
                   mux();
-                  Serial.printf("data_mux_input1: %d", data_mux_input1);
-                  Serial.printf(", data_mux_input2: %d", data_mux_input2);
-                  Serial.printf(", data_mux_input3: %d", data_mux_input3);
-                  Serial.printf(", data_mux_output1: %d", data_mux_output1);
-                  Serial.printf(", data_mux_sel: %d\n", signal_mux_sel);
                   reg_file();
-                  Serial.printf("data_reg_file_input1: %d", data_reg_file_input1);
-                  Serial.printf(", data_reg_file_output1: %d", data_reg_file_output1);
-                  Serial.printf(", data_reg_file_output2: %d", data_reg_file_output2);
-                  Serial.printf(", data_reg_file_output3: %d", data_reg_file_output3);
-                  Serial.printf(", data_reg_file_output4: %d", data_reg_file_output4);
-                  Serial.printf(", data_reg_file_sel: %d\n", signal_reg_file_sel);
                   add();
-                  Serial.printf("data_add_input1: %d", data_add_input1);
-                  Serial.printf(", data_add_input2: %d", data_add_input2);
-                  Serial.printf(", data_add_output1: %d", data_add_output1);
-                  Serial.printf(", data_add_sel: %d\n", signal_add_sel);
                   subs();
-                  Serial.printf("data_sub_input1: %d", data_sub_input1);
-                  Serial.printf(", data_sub_input2: %d", data_sub_input2);
-                  Serial.printf(", data_sub_output1: %d", data_sub_output1);
-                  Serial.printf(", data_sub_sel: %d\n", signal_sub_sel);
 
                   Serial.println("3) Execute state");
                   if(opcode != 0x22 && opcode != 0xFF) Reg_PC = Reg_PC+3;
