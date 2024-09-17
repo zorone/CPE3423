@@ -7,40 +7,46 @@
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
 
-byte program_mem[30] = { 0x74,
-                        0x00,
-                        0x0A,
-                        0xF8,
-                        0x00,
-                        0x00,
-                        0x88,
-                        0x00,
-                        0x05,
-                        0xA8,
-                        0x00,
-                        0x00,
-                        0xA8,
-                        0x00,
-                        0x01,
-                        0xA8,
-                        0x00,
-                        0x02,
-                        0xA8,
-                        0x00,
-                        0x03,
-                        0xA8,
-                        0x00,
-                        0x04,
-                        0xA8,
-                        0x00,
-                        0x05,
-                        0xFF,
-                        0x00,
-                        0x00};
-byte prog_mem_add[9] =  { 0x74,
+// program 1
+byte program_mem[] = { 0x74,
+                       0x00,
+                       0x0A,
+                       0xF8,
+                       0x00,
+                       0x00,
+                       0x88,
+                       0x00,
+                       0x05,
+                       0xA8,
+                       0x00,
+                       0x00,
+                       0xA8,
+                       0x00,
+                       0x01,
+                       0xA8,
+                       0x00,
+                       0x02,
+                       0xA8,
+                       0x00,
+                       0x03,
+                       0xA8,
+                       0x00,
+                       0x04,
+                       0xA8,
+                       0x00,
+                       0x05,
+                       0xFF,
+                       0x00,
+                       0x00};
+
+// program 2: Add and Subtract
+byte prog_mem_add[] = { 0x74,
                         0x00,
                         0x0A,
                         0x34,
+                        0x00,
+                        0x02,
+                        0x94,
                         0x00,
                         0x01,
                         0xFF,
@@ -256,7 +262,13 @@ void loop(){
                                     Serial.print("Reg_PC: ");
                                     Serial.println(Reg_PC, HEX);
                                     break;
-                    case 0x34:    // ADD A,#data
+                    case 0x24:    // ADD A,#data
+                                    command = 0;
+                                    // Serial.printf("Register A : %#04x\n", Reg_A);    // will show when trigger reg_file()
+                                    // Reg_A = Reg_A+operand_lo;
+                                    // Serial.print("Register A :");
+                                    // Serial.println(Reg_A,HEX);
+                    case 0x34:    // ADDC A,#data
                                     command = 0;
                                     // Serial.printf("Register A : %#04x\n", Reg_A);    // will show when trigger reg_file()
                                     // Reg_A = Reg_A+operand_lo;
@@ -285,6 +297,12 @@ void loop(){
                                     Serial.print("]: ");
                                     Serial.println(data_memory[data_memory_addr], HEX);
                                     break;
+                    case 0x94:    // SUBB A,#data
+                                    command = 1;
+                                    // Serial.printf("Register A : %#04x\n", Reg_A);    // will show when trigger reg_file()
+                                    // Reg_A = Reg_A-operand_lo;
+                                    // Serial.print("Register A :");
+                                    // Serial.println(Reg_A,HEX);
                     case 0xA8:    // MOV R0, data addr
                                     Reg_R0 = data_memory[data_memory_addr];
                                     Serial.print("Data memory[");
