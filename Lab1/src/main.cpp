@@ -1,5 +1,8 @@
 #include <Arduino.h>
 
+// สำหรับอุปกรณ์ใครที่ใช้งาน Serial.printf() ไม่ได้ ให้ดูใน branch lect5-no-printf
+// https://github.com/zorone/CPE3423/blob/lect5-no-printf/Lab1/src/main.cpp
+
 /********************************************************************************/
 /*                      Program Memory    8 bit  b address                      */
 /********************************************************************************/
